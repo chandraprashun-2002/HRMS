@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from .models import Attendance
 from employees.models import Employee
+from datetime import date as date_today
 
 
 class AttendanceSerializer(serializers.ModelSerializer):
@@ -15,6 +16,12 @@ class AttendanceSerializer(serializers.ModelSerializer):
         """Validate attendance data"""
         employee = data.get('employee')
         date = data.get('date')
+        
+        # Prevent future attendance
+        if date > date_today.today():
+            raise serializers.ValidationError({
+                "date": "Cannot mark attendance for a future date."
+            })
         
         # Check for duplicate attendance on the same date
         if self.instance is None:  # Create
