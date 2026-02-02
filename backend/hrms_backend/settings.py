@@ -1,14 +1,15 @@
 from pathlib import Path
+import os
 
 # Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# secret key !
-SECRET_KEY = 'django-insecure-@a*_ks*1$=$+$rwegl$%-qau&q55((ez!_zs+=7w_c#!28a#y2'
+# Security - use environment variables in production
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-@a*_ks*1$=$+$rwegl$%-qau&q55((ez!_zs+=7w_c#!28a#y2')
 
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'true').lower() == 'true'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Static files in production
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -56,15 +58,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hrms_backend.wsgi.application'
 
-# Database - MySQL
+# Database - MySQL (Railway provides MYSQL* environment variables)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hrms_db',
-        'USER': 'root',
-        'PASSWORD': 'prasun@123',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.environ.get('MYSQLDATABASE', 'hrms_db'),
+        'USER': os.environ.get('MYSQLUSER', 'root'),
+        'PASSWORD': os.environ.get('MYSQLPASSWORD', 'prasun@123'),
+        'HOST': os.environ.get('MYSQLHOST', 'localhost'),
+        'PORT': os.environ.get('MYSQLPORT', '3306'),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
@@ -82,6 +84,8 @@ USE_TZ = True
 
 # Static files
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

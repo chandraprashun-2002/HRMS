@@ -1,10 +1,10 @@
 // API Service - using fetch (no axios)
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 
 // Generic fetch wrapper with error handling
 async function fetchAPI(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
-  
+
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -15,7 +15,7 @@ async function fetchAPI(endpoint, options = {}) {
   try {
     const response = await fetch(url, config);
     const data = await response.json();
-    
+
     if (!response.ok) {
       throw {
         status: response.status,
@@ -23,7 +23,7 @@ async function fetchAPI(endpoint, options = {}) {
         errors: data.errors || {},
       };
     }
-    
+
     return data;
   } catch (error) {
     if (error.status) {
