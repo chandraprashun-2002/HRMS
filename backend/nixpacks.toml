@@ -3,7 +3,7 @@
 providers = ["python"]
 
 [phases.setup]
-nixPkgs = ["python311", "python311Packages.pip", "gcc", "pkg-config", "default-libmysqlclient-dev"]
+nixPkgs = ["python311", "python311Packages.pip", "gcc", "pkg-config", "libmysqlclient"]
 
 [phases.install]
 cmds = ["python -m pip install --upgrade pip", "python -m pip install -r requirements.txt"]
