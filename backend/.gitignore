@@ -1,0 +1,18 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+
+# Virtual Environment
+mvenv/
+venv/
+env/

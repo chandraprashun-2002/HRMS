@@ -1,5 +1,12 @@
 from pathlib import Path
 import os
+import pymysql
+
+# Configure PyMySQL as drop-in replacement for mysqlclient
+pymysql.install_as_MySQLdb()
+
+# Override version check for PyMySQL compatibility with Django
+pymysql.version_info = (2, 2, 1, "final", 0)
 
 # Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
