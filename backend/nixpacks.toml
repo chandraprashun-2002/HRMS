@@ -1,4 +1,4 @@
 # Let Nixpacks auto-detect Python - minimal config
 
 [start]
-cmd = "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn hrms_backend.wsgi"
+cmd = "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn hrms_backend.wsgi --bind 0.0.0.0:$PORT"
